@@ -9,18 +9,11 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
  
-// LED Pin - wiringPi pin 0 是 BCM_GPIO 17。  ssd1306
-//利用 wiringPiSetupSys 进行初始化时必须使用 BCM 编号
-//选择其他 pin 编号时，请同时使用 BCM 编号
-//更新 Property Pages - Build Events - Remote Post-Build Event 命令
-//它使用 gpio 导出进行 wiringPiSetupSys 的设置
-#define	LED	17
- 
-#define I2C_ADDR 0x3c
+#include "display.h"
+#include "front.h"
 unsigned char DataBuffer[8][128];/*全屏大小 8page页 * 128col列  row64行  每页有8格，通过高低列组合出0~127的数据，寻找起始列进行从左向右填充*/
  
 int i2cHand = 0;
- 
  
 void WriteCmd(int fd, unsigned char I2C_Command)//写命令
 {
@@ -136,6 +129,122 @@ void OLED_CLS(void)//清屏
 	}
 	Write_DataBuffer();
 }
+
+
+void oled_flush_with( u8 *gram ) {
+    u8 x, page;
+
+    //oled_send( OLED_ADDR, 0x00, OLED_CMD );
+    //oled_send( OLED_ADDR, 0x10, OLED_CMD );
+
+	WriteCmd(i2cHand, 0x00);
+	WriteCmd(i2cHand, 0x10);
+    for ( page = 0; page < 8; page++ ) {
+        //oled_send( OLED_ADDR, 0xB0|page, OLED_CMD );
+
+	WriteCmd(i2cHand, 0xB0|page);
+        for ( x = 0; x < 128; x++ ) {
+            //oled_send( OLED_ADDR, *gram++, OLED_DATA );
+		WriteData(i2cHand, *gram++);//写数据
+        }
+    }
+}
+
+void oled_set_pos( u8 x, u8 y, u8 val ) {
+    if ( x >= 128 && y >= 64 )
+        return;
+    
+    u8 page = y>>3;       // get page
+    u8 pd   = 1<<(y%8);  // one column page data
+    
+    if ( val ) {
+	DataBuffer[page][x]|=pd;
+        //OLED_GRAM[page][x] |= pd;
+    } else {
+        DataBuffer[page][x] &=~ pd;
+    }
+    
+}
+
+/*
+ *
+ *
+ *画点
+ *
+ * */
+
+/***************************
+*   函数:       oled_draw_point
+*   功能:       画点并显示
+*   x:          x坐标
+*   y:          y坐标
+*   val:        写入的值，1 或 0
+****************************/
+void oled_draw_point( u8 x, u8 y, u8 val ) {
+    oled_set_pos( x, y, val );
+    oled_flush_with( (u8*)DataBuffer );
+
+}
+
+/***************************
+*   函数:       show_char
+*   功能:       调用指定字体显示字符(可显示中文)
+*   width:      字符的宽度
+*   hight:      字符的高度
+*   x:          x坐标
+*   y:          y坐标
+****************************/
+void show_char( u8 *font_buf, u8 width, u8 hight, u8 x, u8 y ) {
+    
+    u8 w, h;
+    
+    u8 page = y>>3;       // get page
+    
+    for ( h = 0; h < (hight>>3); h++ ) {
+        for ( w = 0; w < width; w++ ) {
+         DataBuffer[page][x+w] |= *font_buf++;
+        }
+        page++;
+    }
+}
+
+#if 0
+/***************************
+*   函数:       show_str
+*   功能:       调用指定字体显示字符串
+*   str:        字符串指针
+*   font_type:  调用的字体，在头文件中有定义
+*   x:          x坐标
+*   y:          y坐标
+****************************/
+void show_str( u8 *str, FONT_TYPE font_type, u8 x, u8 y ) {
+    
+    u8 pos = 0;
+
+    while ( str[pos] != '\0' ) {
+        if ( font_type == FONT_6x8 ) {
+            show_char( (u8*)&F8X16[str[pos]-' '], 6, 8, x+(pos<<3), y );
+        } else if ( font_type == FONT_8x16 ) {
+            show_char( (u8*)&F8X16[str[pos]-' '], 8, 16, x+(pos<<3), y );
+        }
+        pos++;
+    }
+    
+    oled_flush_with( (u8*) DataBuffer);
+}
+
+
+
+
+
+#endif
+
+
+
+
+
+
+
 
 
 #if 0
