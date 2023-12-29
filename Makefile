@@ -7,4 +7,6 @@ display:
 run:
 	sudo ./dht 7
 scp:
-	scp ./* bbs@10.42.0.1:/home/bbs/code/dht11
+	scp ./* bbs@192.168.143.100:/home/bbs/code/desgin_12_25
+main:
+	gcc -o mian dht11.c front.c display.c main.c -lwiringPi -g

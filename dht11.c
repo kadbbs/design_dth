@@ -199,7 +199,7 @@ uint8 DHT11_read(int gpio_pin)
 
 }
 
-
+#if 0
 
 int main(int argc, char *argv[])
 
@@ -279,4 +279,4 @@ int main(int argc, char *argv[])
 
 }
 
-
+#endif 
