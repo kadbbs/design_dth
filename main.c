@@ -249,14 +249,22 @@ int main(int argc,char *argv[]){
 	 //show_str( (u8*)"Hello!!!", FONT_8x16, 0, 64-16 );
 	// show_char((u8*)&F8X16['A'-' '],6,8,8,8);
 		
-	
+#if 0	
 	for(int i=0;i<64;i++){
 	
+	}	
+		oled_draw_point(0,32,1);	
+		oled_draw_point(0,16,1);	
 	
-		oled_draw_point(2,i,1);	
-	
-	}
+#endif
 
+
+
+	//OLED_ShowStr(1,0,ch,1);
+
+	u8 rh[64];
+	u8 tmp[64];
+	
 	while(1)
 
 	{
@@ -274,9 +282,14 @@ int main(int argc,char *argv[]){
 		{
 
 			printf("RH:%d.%d\n", (databuf >> 24) & 0xff, (databuf >> 16) & 0xff); 
-
+			sprintf(rh,"RH:%d.%d",(databuf >> 24) & 0xff, (databuf >> 16) & 0xff);
+			OLED_ShowStr(1,0,rh,1);
+			
 			printf("TMP:%d.%d\n", (databuf >> 8) & 0xff, databuf & 0xff);
 
+			sprintf(tmp,"TMP:%d.%d", (databuf >> 8) & 0xff, databuf & 0xff);
+
+			OLED_ShowStr(1,4,tmp,1);
 
 
 			databuf = 0;

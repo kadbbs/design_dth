@@ -55,4 +55,5 @@ void oled_draw_point( u8 x, u8 y, u8 val );
 
 void show_char( u8 *font_buf, u8 width, u8 hight, u8 x, u8 y );
 void show_str( u8 *str, FONT_TYPE font_type, u8 x, u8 y ) ;
+void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsigned char TextSize);
 #endif
