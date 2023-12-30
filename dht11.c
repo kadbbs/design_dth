@@ -37,11 +37,15 @@ void GPIO_init(int gpio_pin)
 {
 
 	pinMode(gpio_pin, OUTPUT); // set mode to output
+	pinMode(29, OUTPUT); // set mode to output
+	pinMode(27, OUTPUT); // set mode to output
 	pinMode(0, OUTPUT); // set mode to output
 
 
 	digitalWrite(gpio_pin, 1); // output a high level
 	digitalWrite(0, 1); // output a high level
+	digitalWrite(29, 1); // output a high level
+	digitalWrite(27, 1); // output a high level
 
 
 
