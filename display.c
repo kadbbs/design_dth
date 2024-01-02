@@ -10,7 +10,7 @@
 #include <wiringPiI2C.h>
  
 #include "display.h"
-#include "front.h"
+#include "font.h"
 unsigned char DataBuffer[8][128];/*全屏大小 8page页 * 128col列  row64行  每页有8格，通过高低列组合出0~127的数据，寻找起始列进行从左向右填充*/
  
 int i2cHand = 0;

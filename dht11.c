@@ -1,36 +1,20 @@
 #include <stdio.h>
-
 #include <string.h>
-
 #include <stdlib.h>
-
 #include <unistd.h>
-
-
-
 #include <wiringPi.h>
 
 
-
 typedef unsigned char uint8;
-
 typedef unsigned int  uint16;
-
 typedef unsigned long uint32;
 
-
-
 uint32 databuf;
-
-
-
-/*
 
 //初始化引脚
 
 //上电1s内不操作，维持电平稳定
 
-*/
 
 void GPIO_init(int gpio_pin)
 
@@ -46,12 +30,7 @@ void GPIO_init(int gpio_pin)
 	digitalWrite(0, 1); // output a high level
 	digitalWrite(29, 1); // output a high level
 	digitalWrite(27, 1); // output a high level
-
-
-
 	sleep(1);
-
-
 
 	return;
 
@@ -72,18 +51,11 @@ void GPIO_init(int gpio_pin)
 */
 
 void DHT11_start(int gpio_pin)
-
 {	
-
 	pinMode(gpio_pin, OUTPUT);
-
 	digitalWrite(gpio_pin, 0);
 
-
-
 	delay(25);
-
-
 
 	digitalWrite(gpio_pin, 1);
 
@@ -91,11 +63,7 @@ void DHT11_start(int gpio_pin)
 
 	pullUpDnControl(gpio_pin, PUD_UP);	//当引脚被配置为输入(INPUT)模式，使用函数pullUpDnControl来激活其内部的上拉电阻或下拉电阻
 
-
-
 	delayMicroseconds(27);
-
-
 
 	return;
 
@@ -118,23 +86,13 @@ void DHT11_start(int gpio_pin)
 */
 
 uint8 DHT11_read(int gpio_pin)
-
 {
-
 	uint8 crc, i;
-
-
-
 	if (0 == digitalRead(gpio_pin))			//主机接收到从机发送的响应信号（低电平）
-
 	{
-
 		while(!digitalRead(gpio_pin));		//主机接收到从机发送的响应信号（高电平）
 
-
-
 		for (i = 0; i < 32; i++)
-
 		{
 
 			while(digitalRead(gpio_pin));	//数据位开始的54us低电平
@@ -142,63 +100,36 @@ uint8 DHT11_read(int gpio_pin)
 			while(!digitalRead(gpio_pin));	//数据位开始的高电平就开始
 
 
-
 			delayMicroseconds(32);			//跳过位数据，32us已经是数据0和数据1的差距点
-
 
 
 			databuf *= 2;
 
-
-
 			if (digitalRead(gpio_pin) == 1)
-
 			{
-
 				databuf++;
-
 			}
-
 		}
 
-
-
 		for (i = 0; i < 8; i++)
-
 		{
 
 			while (digitalRead(gpio_pin));
 
 			while (!digitalRead(gpio_pin));
-
-
-
 			delayMicroseconds(32);
 
-
-
 			crc *= 2;  
-
 			if (digitalRead(gpio_pin) == 1)
-
 			{
-
 				crc++;
-
 			}
-
 		}
-
 		return 1;
-
 	}
-
 	else
-
 	{
-
 		return 0;
-
 	}
 
 }

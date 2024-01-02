@@ -9,5 +9,12 @@ run:
 scp:
 	scp -r ./.git ./* bbs@10.222.20.103:/home/bbs/code/design_12_25
 	#scp ./* bbs@192.168.143.100:/home/bbs/code/desgin_12_25
-main:	dht11.c front.c display.c main.c
-	gcc -o main dht11.c front.c  display.c main.c -lwiringPi -g -Wall
+scp_book:
+	scp -r ./.git ./* bbs@10.222.20.110:/home/bbs/code/design_12_25
+	#scp ./* bbs@192.168.143.100:/home/bbs/code/desgin_12_25
+scp_book_loacl:
+	scp -r ./.git ./* bbs@10.42.0.1:/home/bbs/code/design_12_25
+	#scp ./* bbs@192.168.143.100:/home/bbs/code/desgin_12_25
+
+main:	dht11.c font.c display.c main.c
+	gcc -o main dht11.c font.c  display.c main.c -lwiringPi -g 

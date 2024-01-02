@@ -1,5 +1,4 @@
 #ifndef DISPLAY_H
-
 #define DISPLAY_H
 
 #include<stdio.h>
@@ -12,7 +11,7 @@
 #include<sys/time.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
-#include "front.h" 
+#include "font.h" 
 // LED Pin - wiringPi pin 0 是 BCM_GPIO 17。  ssd1306
 //利用 wiringPiSetupSys 进行初始化时必须使用 BCM 编号
 //选择其他 pin 编号时，请同时使用 BCM 编号
@@ -56,4 +55,7 @@ void oled_draw_point( u8 x, u8 y, u8 val );
 void show_char( u8 *font_buf, u8 width, u8 hight, u8 x, u8 y );
 void show_str( u8 *str, FONT_TYPE font_type, u8 x, u8 y ) ;
 void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char ch[], unsigned char TextSize);
+
+
+
 #endif

@@ -1,5 +1,5 @@
 #include "display.h"
-//#include "front.h"
+#include "font.h"
 #include "dht11.h"
 #include<stdio.h>
 #include<stdlib.h>
@@ -11,35 +11,33 @@
 #include<sys/time.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
- 
 
-int i2cHand;
+//int i2cHand;
+#define TMP  60
 
 int main(int argc,char *argv[]){
-
-	if (2 != argc)
+	if (2 > argc)
 	{
 		printf("Usge: %s <gpio_pin>\n", argv[0]);
 		return 0;
 	}
-
 	if (-1 == wiringPiSetup())
 	{
 		printf("Setup WiringPi failed!\n");
 		return 1;
 	}
-	
+	int tmp_limit=TMP;
+	if(argc==3){
+		tmp_limit=atoi(argv[2]);
+	}
+
+		printf("tmp_argv:%d",tmp_limit);
 	delay(1000); // 毫秒
- 
 	wiringPiSetupSys();
- 
 	pinMode(LED, OUTPUT);
- 
 	i2cHand = wiringPiI2CSetup(I2C_ADDR);	/*加载i2c设备*/
 	OLED_Init(i2cHand);
- 
 	OLED_CLS();
-
 	 //show_str( (u8*)"Hello!!!", FONT_8x16, 0, 64-16 );
 	// show_char((u8*)&F8X16['A'-' '],6,8,8,8);
 		
@@ -70,7 +68,8 @@ int main(int argc,char *argv[]){
 			sprintf(rh,"RH:%d.%d",(databuf >> 24) & 0xff, (databuf >> 16) & 0xff);
 			OLED_ShowStr(1,0,rh,1);
 			printf("TMP:%d.%d\n", (databuf >> 8) & 0xff, databuf & 0xff);
-			if(((databuf >> 8) & 0xff)>60){
+
+			if(((databuf >> 8) & 0xff)>tmp_limit){
 				digitalWrite(27, 0); // output a high level
 			}else{
 				digitalWrite(27, 1); // output a high level
