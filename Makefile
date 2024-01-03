@@ -18,3 +18,6 @@ scp_book_loacl:
 
 main:	dht11.c font.c display.c main.c
 	gcc -o main dht11.c font.c  display.c main.c -lwiringPi -g 
+t_m:
+	gcc -o test_web test_web.c web.c -lwebsockets -lpthread
+

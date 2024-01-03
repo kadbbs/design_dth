@@ -18,7 +18,7 @@
             ws.onmessage = (message) => {
                 let data = message.data;
                 console.log('get websocket message---', data);
-		
+		document.body.innerHTML = "";		
 		document.write('Received from server RH: ' + data);
 		document.write('<br/>');
 		document.write('Received from server TMP: ' + data);
