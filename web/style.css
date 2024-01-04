@@ -1,0 +1,51 @@
+.outer-container {
+    width: 650px;
+    height: 500px;
+    background-color: rgba(50, 50, 50, 0.5);
+    border: 2px solid #000;
+    border-radius: 10px;
+    margin: 50px auto;
+    padding: 0px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.inner-container {
+    width: 530px;
+    height: 330px;
+    background-color: #F5F5F5;
+    margin: 20px auto 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.extra-container {
+    width: 100%;
+    height: 120px;
+    background-color: #F5F5F5;
+    margin: 0;
+    padding: 0px;
+    border-radius: 0 0 10px 10px;
+}
+
+.temperature {
+    font-size: 100px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.time {
+    font-size: 30px;
+    margin-bottom: 10px;
+    margin-right: 40px;
+    text-align:left;
+}
+
+.humidity {
+    font-size: 70px;
+    font-weight: bold;
+
+}

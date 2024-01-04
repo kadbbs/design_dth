@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link type="text/css" rel="stylesheet" href="style.css" />
   <script>
     window.onload = () => {
         if ('WebSocket' in window) {
@@ -16,12 +17,14 @@
                 ws.send('success');
             }
             ws.onmessage = (message) => {
-                let data = message.data;
-                console.log('get websocket message---', data);
-		document.body.innerHTML = "";		
-		document.write('Received from server RH: ' + data);
-		document.write('<br/>');
-		document.write('Received from server TMP: ' + data);
+                //let tem = message.data;
+                //let hum = message.data;
+                let data=message.data;
+                 parts=data.split("#");
+                console.log('get websocket message---', data);	
+		console.log(parts);
+        document.getElementById("hum").innerHTML=parts[0]+"."+parts[1]+"%";
+        document.getElementById("tem").innerHTML=parts[2]+"."+parts[3]+"℃";
             }
             ws.onerror = () => {
                 console.error('websocket fail');
@@ -34,6 +37,27 @@
 
 </head>
 <body>
-  
+    <div class="outer-container">
+        <div class="inner-container">
+            <div style="font-size: 20px; font-weight: bold;">temperature and humidity sensors </div>
+        <div><b style="font-size: 30px;">Temperature                </b> <span id="tem" class="temperature"></span></div>
+            <br>
+            <br>
+            <div>time <span id="datetime" class="time"></span>
+            humidity<span id="hum" class="humidity"></span></div>
+        </div>
+        <div class="extra-container"></div>
+    </div> 
 </body>
+<script src="background.js"></script>
+<script>
+  setInterval(() => {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var timeString = hours + ":" + minutes;
+
+    document.getElementById('datetime').innerHTML = timeString;
+  }, 1000);
+</script>
 </html>

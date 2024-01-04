@@ -11,9 +11,12 @@
 #include<sys/time.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
-
+#include "send_data.h"
+#include <pthread.h>
 //int i2cHand;
 #define TMP  60
+
+
 
 int main(int argc,char *argv[]){
 	if (2 > argc)
@@ -55,6 +58,11 @@ int main(int argc,char *argv[]){
 	u8 rh[64];
 	u8 tmp[64];
 	
+	//pthread_t tid;
+	//pthread_create(&tid,NULL,fun,NULL);
+
+	s_init();
+	char sendbuf[32];
 	while(1)
 	{
 		GPIO_init(atoi(argv[1]));
@@ -63,6 +71,9 @@ int main(int argc,char *argv[]){
 
 		if (DHT11_read(atoi(argv[1])))
 		{
+			memset(sendbuf,0,32);
+		    	sprintf(sendbuf,"%d#%d#%d#%d", (databuf >> 24) & 0xff , (databuf >> 16) & 0xff , (databuf >> 8) & 0xff, databuf & 0xff);
+			senddata(sendbuf,strlen(sendbuf));
 			printf("RH:%d.%d\n", (databuf >> 24) & 0xff, (databuf >> 16) & 0xff); 
 			memset(rh,0,64);
 			sprintf(rh,"RH:%d.%d",(databuf >> 24) & 0xff, (databuf >> 16) & 0xff);

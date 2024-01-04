@@ -1,6 +1,7 @@
 
 
+OBJ := server.c test_web.c web.c
+LB := -lwebsockets -lpthread
+web:${OBJ}
 
-web:web.c
-	gcc -o web web.c -lwebsockets
-
+	gcc -o $@ $^ ${LB}
